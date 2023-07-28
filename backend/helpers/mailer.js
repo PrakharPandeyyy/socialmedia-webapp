@@ -4,7 +4,8 @@ const OAuth2 = google.auth.OAuth2;
 
 oauth_link = "https://developers.google.com/oauthplayground";
 
-const { Email, MAILING_ID, MAILING_SECRET, MAILING_REFRESH ,PASS} = process.env;
+const { EMAIL, MAILING_ID, MAILING_SECRET, MAILING_REFRESH, PASS } =
+  process.env;
 
 const auth = new OAuth2(
   MAILING_ID,
@@ -23,8 +24,8 @@ exports.sendVerificationEmail = (email, name, url) => {
     service: "gmail",
     auth: {
       type: "OAuth2",
-      user: Email,
-      pass :PASS,
+      user: EMAIL,
+      pass: PASS,
       clientId: MAILING_ID,
       clientSecret: MAILING_SECRET,
       refreshToken: MAILING_REFRESH,
