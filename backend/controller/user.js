@@ -69,7 +69,7 @@ exports.register = async (req, res) => {
     const token = generateToken({ id: user._id.toString() }, "7d");
 
     res.send({
-      message: "User created successfully",
+      message: "User created successfully, Activate Your account by clicking on the link sent to your email.",
       id: user._id,
       username: user.username,
       picture: user.picture,
