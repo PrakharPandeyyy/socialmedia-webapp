@@ -50,6 +50,7 @@ Mongoose: An ODM (Object Data Modeling) library for MongoDB and Node.js, used fo
 Redux: A state management library for managing application state in the frontend.
 
 Axios: A promise-based HTTP client used for making API requests.
+
 JWT (JSON Web Tokens): Used for secure authentication and user session management.
 
 Bcrypt: A library used for hashing and salting passwords for secure storage.
