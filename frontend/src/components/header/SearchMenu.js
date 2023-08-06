@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Return, Search } from "../../svg";
 import useClickOutside from "../../helpers/clickOutside";
-
 export default function SearchMenu({ color, setShowSearchMenu }) {
   const [iconVisible, setIconVisible] = useState(true);
   const menu = useRef(null);
@@ -36,21 +35,25 @@ export default function SearchMenu({ color, setShowSearchMenu }) {
               <Search color={color} />
             </div>
           )}
-          <input type="text" placeholder="Search Facebook" ref={input} onFocus={()=>{
-            setIconVisible(false)
-          }}
-          onBlur={()=>{
-            setIconVisible(true);
-          }}
+          <input
+            type="text"
+            placeholder="Search Facebook"
+            ref={input}
+            onFocus={() => {
+              setIconVisible(false);
+            }}
+            onBlur={() => {
+              setIconVisible(true);
+            }}
           />
         </div>
       </div>
       <div className="search_history_header">
-        <span>Recent Searches</span>
+        <span>Recent searches</span>
         <a>Edit</a>
       </div>
       <div className="search_history"></div>
-      <div className="search_result scrollbar"></div>
+      <div className="search_results scrollbar"></div>
     </div>
   );
 }

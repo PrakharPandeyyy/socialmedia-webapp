@@ -50,13 +50,9 @@ export default function DateOfBirthSelect({
           className={
             !view3 ? "input_error" : "input_error input_error_select_large"
           }
-          style={{
-            transform: "translateY(-3px)"}}
         >
           <div
             className={!view3 ? "error_arrow_bottom" : "error_arrow_left"}
-            style={{
-                transform: "translateY(.2px)"}}
           ></div>
           {dateError}
         </div>
