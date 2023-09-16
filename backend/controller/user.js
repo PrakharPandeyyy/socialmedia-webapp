@@ -69,7 +69,8 @@ exports.register = async (req, res) => {
     const token = generateToken({ id: user._id.toString() }, "7d");
 
     res.send({
-      message: "User created successfully, Activate Your account by clicking on the link sent to your email.",
+      message:
+        "User created successfully, Activate Your account by clicking on the link sent to your email.",
       id: user._id,
       username: user.username,
       picture: user.picture,
@@ -84,18 +85,30 @@ exports.register = async (req, res) => {
 };
 
 exports.activateAccount = async (req, res) => {
-  const { token } = req.body;
-  const user = jwt.verify(token, process.env.TOKEN_SECRET);
-  console.log(user);
+  try {
+    const validUser = req.user.id;
+    const { token } = req.body;
+    const user = jwt.verify(token, process.env.TOKEN_SECRET);
+    console.log(user);
+    const check = await User.findById(user.id);
 
-  const check = await User.findById(user.id);
-  if (check.verified == true) {
-    return res.status(400).json({ message: "this email is already activated" });
-  } else {
-    await User.findByIdAndUpdate(user.id, { verified: true });
-    return res
-      .status(200)
-      .json({ message: "Account has beeen activated successfully." });
+    if (validUser != user.id) {
+      return res
+        .status(400)
+        .json({ message: "You do not have the authorization to peform this action." });
+    }
+    if (check.verified == true) {
+      return res
+        .status(400)
+        .json({ message: "This email is already activated" });
+    } else {
+      await User.findByIdAndUpdate(user.id, { verified: true });
+      return res
+        .status(200)
+        .json({ message: "Account has beeen activated successfully." });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 exports.login = async (req, res) => {
@@ -103,10 +116,12 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: "Email entered is not connected with any account." });
+      return res
+        .status(400)
+        .json({ message: "Email entered is not connected with any account." });
     }
     const check = await bcrypt.compare(password, user.password);
-    if(!check){
+    if (!check) {
       return res.status(400).json({ message: "Invalid Credentials." });
     }
     const token = generateToken({ id: user._id.toString() }, "7d");
@@ -122,6 +137,26 @@ exports.login = async (req, res) => {
       verified: user.verified,
     });
   } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.sendVerification = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const user = await User.findById(id);
+    if(user.verified == true){
+      return res.status(400).json({message:"This email is already activated."})
+    }
+    const emailVerificationToken = generateToken(
+      { id: user._id.toString() },
+      "30m"
+    );
+    const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`;
+    sendVerificationEmail(user.email, user.first_name, url);
+    const token = generateToken({ id: user._id.toString() }, "7d");
+    return res.status(200).json({message:"Email sent successfully."})
+  } catch (error) {
     res.status(500).json({ message: err.message });
   }
 };

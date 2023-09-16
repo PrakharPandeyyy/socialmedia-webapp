@@ -1,7 +1,6 @@
-import { ErrorMessage, useField } from "formik";
 import "./style.css";
+import { useField, ErrorMessage } from "formik";
 import { useMediaQuery } from "react-responsive";
-
 export default function LoginInput({ placeholder, bottom, ...props }) {
   const [field, meta] = useField(props);
   const desktopView = useMediaQuery({
@@ -18,9 +17,9 @@ export default function LoginInput({ placeholder, bottom, ...props }) {
         >
           {meta.touched && meta.error && <ErrorMessage name={field.name} />}
           {meta.touched && meta.error && (
-            <div className={
-              desktopView ? "error_arrow_left" : "error_arrow_top"
-            }> </div>
+            <div
+              className={desktopView ? "error_arrow_left" : "error_arrow_top"}
+            ></div>
           )}
         </div>
       )}
@@ -37,21 +36,23 @@ export default function LoginInput({ placeholder, bottom, ...props }) {
           className={
             desktopView ? "input_error input_error_desktop" : "input_error"
           }
-          style={{ transform: "translateY(1px)" }}
+          style={{ transform: "translateY(2px)" }}
         >
           {meta.touched && meta.error && <ErrorMessage name={field.name} />}
           {meta.touched && meta.error && (
-            <div className={
-              desktopView ? "error_arrow_left" : "error_arrow_top"
-            }>
-               </div>
+            <div
+              className={
+                desktopView ? "error_arrow_left" : "error_arrow_bottom"
+              }
+            ></div>
           )}
         </div>
       )}
+
       {meta.touched && meta.error && (
         <i
           className="error_icon"
-          style={{ top: `${!bottom && !desktopView && "63%"}` }}
+          style={{ top: `${!bottom && !desktopView ? "63%" : "15px"}` }}
         ></i>
       )}
     </div>
